@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.sql.Struct;
+import java.util.ArrayList;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE = "registration";
@@ -77,4 +80,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return ((result!=null && result.getCount()>0)?true:false);
     }
 
+    public ArrayList<String> getUserList() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(
+                TABLE,
+                new String[]{COL_4},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        ArrayList<String> list = new ArrayList<String>();
+        if(cursor!=null && cursor.getCount()>0){
+            cursor.moveToFirst();
+            do{
+                list.add(cursor.getString(0));
+            }while(cursor.moveToNext());
+        }
+        return list;
+    }
+
+    public Cursor getSingleUserData(String username) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(
+                TABLE,
+                null,
+                "username = ?",
+                new String[]{username},
+                null,
+                null,
+                null
+        );
+
+        return cursor;
+    }
 }
