@@ -31,21 +31,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+TABLE+
-                "("+ COL_1 + " integer primary key autoincrement,"
-                + COL_2+" text,"
-                + COL_3+" text,"
-                + COL_4+" text,"
-                + COL_5+" text,"
-                + COL_6+" text,"
-                + COL_7+" text,"
-                + COL_8+" text,"
-                + COL_9+" text)");
+        db.execSQL("CREATE TABLE " + TABLE +
+                "(" + COL_1 + " integer primary key autoincrement,"
+                + COL_2 + " text,"
+                + COL_3 + " text,"
+                + COL_4 + " text,"
+                + COL_5 + " text,"
+                + COL_6 + " text,"
+                + COL_7 + " text,"
+                + COL_8 + " text,"
+                + COL_9 + " text)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
         onCreate(db);
     }
 
@@ -53,16 +53,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COL_2,fname);
-        values.put(COL_3,lname);
-        values.put(COL_4,email);
-        values.put(COL_5,pass);
-        values.put(COL_6,branch);
-        values.put(COL_7,gender);
-        values.put(COL_8,city);
-        values.put(COL_9,status);
-        long result = db.insert(TABLE,null,values);
-        if(result==-1) return false;
+        values.put(COL_2, fname);
+        values.put(COL_3, lname);
+        values.put(COL_4, email);
+        values.put(COL_5, pass);
+        values.put(COL_6, branch);
+        values.put(COL_7, gender);
+        values.put(COL_8, city);
+        values.put(COL_9, status);
+        long result = db.insert(TABLE, null, values);
+        if (result == -1) return false;
         else return true;
     }
 
@@ -70,14 +70,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         //Select * from table
         Cursor result = db.query(TABLE,
-                new String[]{COL_4,COL_5},
+                new String[]{COL_4, COL_5},
                 "username = ? and password = ?",
-                new String[]{e,p},
+                new String[]{e, p},
                 null,
                 null,
                 null);
 
-        return ((result!=null && result.getCount()>0)?true:false);
+        return ((result != null && result.getCount() > 0) ? true : false);
     }
 
     public ArrayList<String> getUserList() {
@@ -92,11 +92,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null
         );
         ArrayList<String> list = new ArrayList<String>();
-        if(cursor!=null && cursor.getCount()>0){
+        if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
-            do{
+            do {
                 list.add(cursor.getString(0));
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         return list;
     }
@@ -114,5 +114,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
 
         return cursor;
+    }
+
+    public boolean duplicate_user(String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE,
+                new String[]{COL_4},
+                "username = ?",
+                new String[]{email},
+                null,
+                null,
+                null
+        );
+        return (cursor != null && cursor.getCount() > 0) ? true : false;
     }
 }
