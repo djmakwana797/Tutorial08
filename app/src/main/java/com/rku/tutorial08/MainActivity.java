@@ -50,14 +50,13 @@ public class MainActivity extends AppCompatActivity {
                 String e = edtEmail.getText().toString();
 
                 if(!Patterns.EMAIL_ADDRESS.matcher(e).matches()){
-                    Toast.makeText(MainActivity.this, "Invalid Eamil Address", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Invalid Email Address", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(helper.validation(e,p)){
                     editor.putString("username",e);
                     editor.commit();
                     Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
-                    intent.putExtra("Username",e);
                     startActivity(intent);
                     finish();
                 }
